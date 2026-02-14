@@ -24,10 +24,11 @@ const CLAUDEDEV_PATH = path.join(__dirname, '..', 'bin', 'Release', 'net8.0', 'c
  */
 async function runClaudeDevCommand(args) {
   try {
-    const command = `"${CLAUDEDEV_PATH}" ${args}`;
-    const { stdout, stderr } = await execAsync(command, {
+    // Direct execution - let Node.js handle the escaping
+    const { stdout, stderr } = await execAsync(`"${CLAUDEDEV_PATH}" ${args}`, {
       maxBuffer: 10 * 1024 * 1024, // 10MB buffer
-      timeout: 30000 // 30 second timeout
+      timeout: 30000, // 30 second timeout
+      shell: 'powershell.exe' // Use PowerShell as the shell
     });
     
     return {
@@ -336,7 +337,9 @@ class ClaudeDevStudioServer {
       outcome: args.outcome || 'unknown'
     });
     
-    const result = await runClaudeDevCommand(`record "${args.project_path}" activity '${activityJson}'`);
+    // Escape for PowerShell: replace ' with '' inside JSON, then wrap in single quotes
+    const escapedJson = activityJson.replace(/'/g, "''");
+    const result = await runClaudeDevCommand(`record "${args.project_path}" activity '${escapedJson}'`);
     return {
       content: [
         {
@@ -355,7 +358,9 @@ class ClaudeDevStudioServer {
       lesson: args.lesson
     });
     
-    const result = await runClaudeDevCommand(`record "${args.project_path}" mistake '${mistakeJson}'`);
+    // Escape for PowerShell: replace ' with '' inside JSON, then wrap in single quotes
+    const escapedJson = mistakeJson.replace(/'/g, "''");
+    const result = await runClaudeDevCommand(`record "${args.project_path}" mistake '${escapedJson}'`);
     return {
       content: [
         {

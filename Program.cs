@@ -156,16 +156,19 @@ namespace ClaudeDevStudio
 
         static int RecordData(string[] args)
         {
-            if (args.Length < 3)
+            if (args.Length < 4)
             {
-                Console.WriteLine("Usage: claudedev record <type> <json_data>");
+                Console.WriteLine("Usage: claudedev record <project_path> <type> <json_data>");
                 Console.WriteLine("Types: activity, pattern, mistake, decision, performance");
                 return 1;
             }
 
-            var projectPath = Directory.GetCurrentDirectory();
-            var type = args[1].ToLower();
-            var jsonData = string.Join(" ", args.Skip(2));
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var type = args[2].ToLower();
+            var jsonData = string.Join(" ", args.Skip(3));
 
             var memory = new ClaudeMemory(projectPath);
 
@@ -225,11 +228,14 @@ namespace ClaudeDevStudio
 
         static int CheckAction(string[] args)
         {
-            if (args.Length < 2)
-                return Error("Usage: claudedev check <action_description>");
+            if (args.Length < 3)
+                return Error("Usage: claudedev check <project_path> <action_description>");
 
-            var projectPath = Directory.GetCurrentDirectory();
-            var actionDescription = string.Join(" ", args.Skip(1));
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var actionDescription = string.Join(" ", args.Skip(2));
 
             var memory = new ClaudeMemory(projectPath);
             var check = memory.CheckForMistake(actionDescription);
