@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\ClaudeMemory.cs" Link="Core\ClaudeMemory.cs" />
+    <Compile Include="..\MemorySchemas.cs" Link="Core\MemorySchemas.cs" />
+    <Compile Include="..\MemoryCurator.cs" Link="Core\MemoryCurator.cs" />
+    <Compile Include="..\VSDebugMonitor.cs" Link="Core\VSDebugMonitor.cs" />
+    <Compile Include="..\BuildAutomation.cs" Link="Core\BuildAutomation.cs" />
+    <Compile Include="..\UpdateChecker.cs" Link="Core\UpdateChecker.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="icon.ico" />
+  </ItemGroup>
+</Project>

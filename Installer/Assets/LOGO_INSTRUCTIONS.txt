@@ -1,0 +1,14 @@
+# ⚠️ IMPORTANT - LOGO FILE
+
+Your logo file "Cloud_Developer_Studio.png" was uploaded during our conversation.
+
+**ACTION NEEDED:**
+Copy the logo file to: `D:\Projects\ClaudeDevStudio\Installer\Assets\Logo_Source.png`
+
+The logo file should be in your downloads or wherever you uploaded it from.
+
+Once copied, you can generate all required icon sizes using the instructions in README.md
+
+---
+
+**All other installer files are ready to use!**

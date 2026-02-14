@@ -1,0 +1,681 @@
+using System;
+using System.IO;
+using System.Linq;
+using ClaudeDevStudio.Memory;
+
+namespace ClaudeDevStudio
+{
+    /// <summary>
+    /// Command-line interface for ClaudeDevStudio
+    /// 
+    /// Usage:
+    ///   claudedev init <project_path>        Initialize memory system for project
+    ///   claudedev load <project_path>        Load context (used by Claude at session start)
+    ///   claudedev record <type> <data>       Record activity/pattern/mistake/etc
+    ///   claudedev check <action>             Check if action matches prior mistake
+    ///   claudedev stats                      Show memory statistics
+    ///   claudedev handoff                    Generate session handoff document
+    ///   claudedev cleanup                    Run daily memory cleanup
+    /// </summary>
+    class Program
+    {
+        static int Main(string[] args)
+        {
+            try
+            {
+                if (args.Length == 0)
+                {
+                    ShowHelp();
+                    return 0;
+                }
+
+                var command = args[0].ToLower();
+
+                return command switch
+                {
+                    "init" => InitProject(args),
+                    "load" => LoadContext(args),
+                    "record" => RecordData(args),
+                    "check" => CheckAction(args),
+                    "stats" => ShowStats(args),
+                    "handoff" => GenerateHandoff(args),
+                    "cleanup" => RunCleanup(args),
+                    "monitor" => MonitorDebug(args),
+                    "build" => BuildProject(args),
+                    "package" => PackageProject(args),
+                    "clean" => CleanProject(args),
+                    "help" => ShowHelp(),
+                    _ => Error($"Unknown command: {command}")
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error: {ex.Message}");
+                Console.Error.WriteLine(ex.StackTrace);
+                return 1;
+            }
+        }
+
+        #region Commands
+
+        static int InitProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev init <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            memory.InitializeNewSession();
+
+            var memoryLocation = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "ClaudeDevStudio",
+                "Projects",
+                Path.GetFileName(projectPath)
+            );
+
+            Console.WriteLine($"✓ Initialized ClaudeDevStudio memory for: {Path.GetFileName(projectPath)}");
+            Console.WriteLine($"  Memory location: {memoryLocation}");
+            
+            return 0;
+        }
+
+        static int LoadContext(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev load <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            memory.LoadContext();
+
+            var state = memory.GetSessionState();
+            Console.WriteLine($"Session: {state.SessionId}");
+            Console.WriteLine($"Started: {state.Started:yyyy-MM-dd HH:mm}");
+            
+            if (state.CurrentTask != null)
+            {
+                Console.WriteLine($"\nCurrent Task: {state.CurrentTask.Description}");
+                Console.WriteLine($"Status: {state.CurrentTask.Status}");
+                
+                if (state.CurrentTask.NextSteps.Any())
+                {
+                    Console.WriteLine("\nNext Steps:");
+                    foreach (var step in state.CurrentTask.NextSteps)
+                    {
+                        Console.WriteLine($"  - {step}");
+                    }
+                }
+            }
+
+            if (state.DecisionsPending.Any())
+            {
+                Console.WriteLine($"\n⚠️ Pending Decisions: {state.DecisionsPending.Count}");
+                foreach (var decision in state.DecisionsPending)
+                {
+                    Console.WriteLine($"  - {decision.Question}");
+                }
+            }
+
+            if (state.UncertaintiesFlagged.Any())
+            {
+                Console.WriteLine($"\n❓ Flagged Uncertainties: {state.UncertaintiesFlagged.Count}");
+                foreach (var uncertainty in state.UncertaintiesFlagged)
+                {
+                    Console.WriteLine($"  - {uncertainty}");
+                }
+            }
+
+            return 0;
+        }
+
+        static int RecordData(string[] args)
+        {
+            if (args.Length < 3)
+            {
+                Console.WriteLine("Usage: claudedev record <type> <json_data>");
+                Console.WriteLine("Types: activity, pattern, mistake, decision, performance");
+                return 1;
+            }
+
+            var projectPath = Directory.GetCurrentDirectory();
+            var type = args[1].ToLower();
+            var jsonData = string.Join(" ", args.Skip(2));
+
+            var memory = new ClaudeMemory(projectPath);
+
+            switch (type)
+            {
+                case "activity":
+                    var activity = System.Text.Json.JsonSerializer.Deserialize<Activity>(jsonData);
+                    if (activity != null)
+                    {
+                        memory.RecordActivity(activity);
+                        Console.WriteLine($"✓ Recorded activity: {activity.Action}");
+                    }
+                    break;
+
+                case "pattern":
+                    var pattern = System.Text.Json.JsonSerializer.Deserialize<Pattern>(jsonData);
+                    if (pattern != null)
+                    {
+                        memory.RecordPattern(pattern);
+                        Console.WriteLine($"✓ Recorded pattern: {pattern.PatternDescription}");
+                    }
+                    break;
+
+                case "mistake":
+                    var mistake = System.Text.Json.JsonSerializer.Deserialize<Mistake>(jsonData);
+                    if (mistake != null)
+                    {
+                        memory.RecordMistake(mistake);
+                        Console.WriteLine($"✓ Recorded mistake: {mistake.MistakeDescription}");
+                    }
+                    break;
+
+                case "decision":
+                    var decision = System.Text.Json.JsonSerializer.Deserialize<Decision>(jsonData);
+                    if (decision != null)
+                    {
+                        memory.RecordDecision(decision);
+                        Console.WriteLine($"✓ Recorded decision: {decision.DecisionDescription}");
+                    }
+                    break;
+
+                case "performance":
+                    var perf = System.Text.Json.JsonSerializer.Deserialize<Performance>(jsonData);
+                    if (perf != null)
+                    {
+                        memory.RecordPerformance(perf);
+                        Console.WriteLine($"✓ Recorded performance: {perf.Operation} = {perf.Duration}{perf.Unit}");
+                    }
+                    break;
+
+                default:
+                    return Error($"Unknown record type: {type}");
+            }
+
+            return 0;
+        }
+
+        static int CheckAction(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev check <action_description>");
+
+            var projectPath = Directory.GetCurrentDirectory();
+            var actionDescription = string.Join(" ", args.Skip(1));
+
+            var memory = new ClaudeMemory(projectPath);
+            var check = memory.CheckForMistake(actionDescription);
+
+            if (check.FoundPriorAttempt && check.PriorMistake != null)
+            {
+                Console.WriteLine("⚠️ WARNING: This action matches a prior mistake!");
+                Console.WriteLine($"\nMistake ID: {check.PriorMistake.Id}");
+                Console.WriteLine($"Date: {check.PriorMistake.Timestamp:yyyy-MM-dd}");
+                Console.WriteLine($"What happened: {check.PriorMistake.Impact}");
+                Console.WriteLine($"Lesson learned: {check.PriorMistake.Lesson}");
+                Console.WriteLine($"\nRecommended alternative: {check.Alternative}");
+                
+                return 1; // Non-zero to indicate "don't proceed"
+            }
+            else
+            {
+                Console.WriteLine("✓ No prior mistakes found for this action");
+                return 0;
+            }
+        }
+
+        static int ShowStats(string[] args)
+        {
+            var projectPath = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
+            
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            memory.LoadContext();
+
+            var state = memory.GetSessionState();
+            
+            Console.WriteLine("=== ClaudeDevStudio Memory Statistics ===");
+            Console.WriteLine($"\nProject: {Path.GetFileName(projectPath)}");
+            Console.WriteLine($"Session: {state.SessionId}");
+            Console.WriteLine($"Uptime: {(DateTime.Now - state.Started).TotalMinutes:F1} minutes");
+            
+            if (state.ContextUsage != null)
+            {
+                Console.WriteLine($"\nContext Usage:");
+                Console.WriteLine($"  Tokens used: {state.ContextUsage.TokensUsed:N0} / {state.ContextUsage.TokensLimit:N0}");
+                Console.WriteLine($"  Percentage: {state.ContextUsage.Percentage:F1}%");
+                
+                if (state.ContextUsage.ShouldHandoff)
+                {
+                    Console.WriteLine("  ⚠️ CRITICAL - Handoff recommended!");
+                }
+                else if (state.ContextUsage.TokensUsed > state.ContextUsage.WarningThreshold)
+                {
+                    Console.WriteLine("  ⚠️ WARNING - Approaching context limit");
+                }
+            }
+
+            // Count recent activities
+            var recentActivities = memory.GetRecentActivities(100);
+            Console.WriteLine($"\nRecent Activity (today):");
+            Console.WriteLine($"  Total actions: {recentActivities.Count}");
+            
+            var errorCount = recentActivities.Count(a => a.Outcome == "failure");
+            var successCount = recentActivities.Count(a => a.Outcome == "success");
+            
+            if (successCount + errorCount > 0)
+            {
+                var successRate = (double)successCount / (successCount + errorCount) * 100;
+                Console.WriteLine($"  Success rate: {successRate:F1}%");
+                Console.WriteLine($"  Errors: {errorCount}");
+            }
+
+            // Storage usage
+            var memoryPath = Path.Combine(@"C:\Users\Dan\Documents\ClaudeDevStudio\Projects", Path.GetFileName(projectPath));
+            if (Directory.Exists(memoryPath))
+            {
+                var totalSize = GetDirectorySize(memoryPath);
+                Console.WriteLine($"\nStorage:");
+                Console.WriteLine($"  Memory size: {totalSize / 1024.0 / 1024.0:F2} MB");
+                Console.WriteLine($"  Location: {memoryPath}");
+            }
+
+            return 0;
+        }
+
+        static int GenerateHandoff(string[] args)
+        {
+            var projectPath = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
+            
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            memory.LoadContext();
+            
+            // This triggers handoff document generation
+            memory.UpdateTokenUsage(200000); // Simulate critical context
+            
+            var handoffPath = Path.Combine(
+                @"C:\Users\Dan\Documents\ClaudeDevStudio\Projects",
+                Path.GetFileName(projectPath),
+                "session_handoff.md"
+            );
+
+            if (File.Exists(handoffPath))
+            {
+                Console.WriteLine($"✓ Handoff document generated:");
+                Console.WriteLine($"  {handoffPath}");
+                Console.WriteLine();
+                Console.WriteLine(File.ReadAllText(handoffPath));
+            }
+            else
+            {
+                return Error("Failed to generate handoff document");
+            }
+
+            return 0;
+        }
+
+        static int RunCleanup(string[] args)
+        {
+            var projectPath = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
+            
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            memory.LoadContext();
+            
+            var report = memory.RunDailyCleanup();
+            
+            return 0;
+        }
+
+        static int ShowHelp()
+        {
+            Console.WriteLine("ClaudeDevStudio - Memory System for AI-Assisted Development");
+            Console.WriteLine();
+            Console.WriteLine("COMMANDS:");
+            Console.WriteLine("  init <project_path>      Initialize memory system for a project");
+            Console.WriteLine("  load <project_path>      Load context (used at session start)");
+            Console.WriteLine("  record <type> <data>     Record activity/pattern/mistake (JSON format)");
+            Console.WriteLine("  check <action>           Check if action matches prior mistake");
+            Console.WriteLine("  stats [project_path]     Show memory statistics");
+            Console.WriteLine("  handoff [project_path]   Generate session handoff document");
+            Console.WriteLine("  cleanup [project_path]   Run daily memory cleanup");
+            Console.WriteLine();
+            Console.WriteLine("  BUILD AUTOMATION:");
+            Console.WriteLine("  monitor <project_path>   Monitor Visual Studio debug output");
+            Console.WriteLine("  build <project_path>     Build project (Debug x64 by default)");
+            Console.WriteLine("  package <project_path>   Create MSIX package");
+            Console.WriteLine("  clean <project_path>     Clean build artifacts");
+            Console.WriteLine();
+            Console.WriteLine("  help                     Show this help");
+            Console.WriteLine();
+            Console.WriteLine("RECORD TYPES:");
+            Console.WriteLine("  activity     Individual action taken");
+            Console.WriteLine("  pattern      Discovered pattern (what works/doesn't)");
+            Console.WriteLine("  mistake      Failed attempt with lesson learned");
+            Console.WriteLine("  decision     Choice made with rationale");
+            Console.WriteLine("  performance  Timing measurement");
+            Console.WriteLine();
+            Console.WriteLine("EXAMPLES:");
+            Console.WriteLine("  claudedev init C:\\Projects\\MyProject");
+            Console.WriteLine("  claudedev load C:\\Projects\\MyProject");
+            Console.WriteLine("  claudedev check \"edit MyFile.cs line 123\"");
+            Console.WriteLine("  claudedev stats");
+            Console.WriteLine("  claudedev handoff");
+            Console.WriteLine("  claudedev monitor C:\\Projects\\MyProject");
+            Console.WriteLine("  claudedev build C:\\Projects\\MyProject Release x64");
+            Console.WriteLine("  claudedev package C:\\Projects\\MyProject");
+            Console.WriteLine("  claudedev clean C:\\Projects\\MyProject");
+            Console.WriteLine();
+            Console.WriteLine("MEMORY LOCATION:");
+            Console.WriteLine("  C:\\Users\\Dan\\Documents\\ClaudeDevStudio\\Projects\\<ProjectName>\\");
+            Console.WriteLine();
+            Console.WriteLine("FILES:");
+            Console.WriteLine("  session_state.json       Current work state");
+            Console.WriteLine("  FACTS.md                 Verified project facts");
+            Console.WriteLine("  UNCERTAINTIES.md         Things to verify");
+            Console.WriteLine("  PATTERNS.jsonl           What works/doesn't work");
+            Console.WriteLine("  MISTAKES.jsonl           Failed attempts (never delete)");
+            Console.WriteLine("  DECISIONS.jsonl          Choices with rationale");
+            Console.WriteLine("  PERFORMANCE.jsonl        Timing baselines");
+            Console.WriteLine("  Activity/               Daily activity logs");
+            Console.WriteLine("  Archive/                Compressed historical logs");
+            Console.WriteLine();
+            Console.WriteLine("For more info: https://github.com/dan/ClaudeDevStudio");
+            
+            return 0;
+        }
+
+        #endregion
+
+        #region Helpers
+
+        static int Error(string message)
+        {
+            Console.Error.WriteLine($"Error: {message}");
+            Console.Error.WriteLine("Run 'claudedev help' for usage information");
+            return 1;
+        }
+
+        static long GetDirectorySize(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            long size = 0;
+
+            // Add file sizes
+            var files = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+            foreach (var file in files)
+            {
+                size += file.Length;
+            }
+
+            return size;
+        }
+
+        static int MonitorDebug(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev monitor <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            var monitor = new VSDebugMonitor(projectPath, memory);
+
+            Console.WriteLine("Starting VS Debug Monitor...");
+            Console.WriteLine("This will capture exceptions and errors from Visual Studio debugger.");
+            Console.WriteLine();
+
+            // Start monitoring (this will block until Ctrl+C)
+            var monitorTask = monitor.StartMonitoringAsync();
+            
+            // Wait for cancellation
+            Console.CancelKeyPress += (s, e) =>
+            {
+                e.Cancel = true;
+                monitor.StopMonitoring();
+            };
+
+            monitorTask.Wait();
+
+            return 0;
+        }
+
+        static int BuildProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev build <project_path> [Debug|Release] [x64|x86]");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var configuration = args.Length > 2 ? args[2] : "Debug";
+            var platform = args.Length > 3 ? args[3] : "x64";
+
+            var memory = new ClaudeMemory(projectPath);
+            var automation = new BuildAutomation(projectPath, memory);
+
+            var result = automation.BuildProjectAsync(configuration, platform).Result;
+
+            if (result.Success)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Build completed successfully in {result.Duration.TotalSeconds:F1}s");
+                return 0;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine($"Build failed: {result.Error}");
+                if (result.ErrorCount > 0)
+                    Console.WriteLine($"  {result.ErrorCount} error(s), {result.WarningCount} warning(s)");
+                Console.ResetColor();
+                return 1;
+            }
+        }
+
+        static int PackageProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev package <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            var automation = new BuildAutomation(projectPath, memory);
+
+            var result = automation.CreateMSIXPackageAsync().Result;
+
+            if (result.Success)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Package created successfully in {result.Duration.TotalSeconds:F1}s");
+                Console.WriteLine($"Location: {result.PackagePath}");
+                return 0;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine($"Packaging failed: {result.Error}");
+                Console.ResetColor();
+                return 1;
+            }
+        }
+
+        static int CleanProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev clean <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            var automation = new BuildAutomation(projectPath, memory);
+
+            var success = automation.CleanProjectAsync().Result;
+
+            if (success)
+            {
+                Console.WriteLine("Project cleaned successfully");
+                return 0;
+            }
+            else
+            {
+                Console.WriteLine("Clean failed");
+                return 1;
+            }
+        }
+
+        #endregion
+    }
+}
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev monitor <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            var monitor = new VSDebugMonitor(projectPath, memory);
+
+            Console.WriteLine("Starting VS Debug Monitor...");
+            Console.WriteLine("This will capture exceptions and errors from Visual Studio debugger.");
+            Console.WriteLine();
+
+            // Start monitoring (this will block until Ctrl+C)
+            var monitorTask = monitor.StartMonitoringAsync();
+            
+            // Wait for cancellation
+            Console.CancelKeyPress += (s, e) =>
+            {
+                e.Cancel = true;
+                monitor.StopMonitoring();
+            };
+
+            monitorTask.Wait();
+
+            return 0;
+        }
+
+        static int BuildProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev build <project_path> [Debug|Release] [x64|x86]");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var configuration = args.Length > 2 ? args[2] : "Debug";
+            var platform = args.Length > 3 ? args[3] : "x64";
+
+            var memory = new ClaudeMemory(projectPath);
+            var automation = new BuildAutomation(projectPath, memory);
+
+            var result = automation.BuildProjectAsync(configuration, platform).Result;
+
+            if (result.Success)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Build completed successfully in {result.Duration.TotalSeconds:F1}s");
+                return 0;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine($"Build failed: {result.Error}");
+                if (result.ErrorCount > 0)
+                    Console.WriteLine($"  {result.ErrorCount} error(s), {result.WarningCount} warning(s)");
+                Console.ResetColor();
+                return 1;
+            }
+        }
+
+        static int PackageProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev package <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            var automation = new BuildAutomation(projectPath, memory);
+
+            var result = automation.CreateMSIXPackageAsync().Result;
+
+            if (result.Success)
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Package created successfully in {result.Duration.TotalSeconds:F1}s");
+                Console.WriteLine($"Location: {result.PackagePath}");
+                return 0;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine($"Packaging failed: {result.Error}");
+                Console.ResetColor();
+                return 1;
+            }
+        }
+
+        static int CleanProject(string[] args)
+        {
+            if (args.Length < 2)
+                return Error("Usage: claudedev clean <project_path>");
+
+            var projectPath = args[1];
+            if (!Directory.Exists(projectPath))
+                return Error($"Project path does not exist: {projectPath}");
+
+            var memory = new ClaudeMemory(projectPath);
+            var automation = new BuildAutomation(projectPath, memory);
+
+            var success = automation.CleanProjectAsync().Result;
+
+            if (success)
+            {
+                Console.WriteLine("Project cleaned successfully");
+                return 0;
+            }
+            else
+            {
+                Console.WriteLine("Clean failed");
+                return 1;
+            }
+        }
+
+
+        #endregion
+    }
+}

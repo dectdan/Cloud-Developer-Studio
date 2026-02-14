@@ -1,0 +1,1 @@
+{"mistake":"Deployed software without debug monitoring running","impact":"Could not see crash details when user tested","fix":"Always run debug monitor before user testing","lesson":"Monitor BEFORE testing, not after crashes","severity":"medium"}

@@ -1,0 +1,6 @@
+// ClaudeDevStudio - AI-Powered Development Memory System
+// Copyright (c) 2026 Dan (dectdan) & Claude (Anthropic)
+// Licensed under MIT License - See LICENSE file for details
+//
+// This file is part of ClaudeDevStudio, a tool designed to help Claude AI
+// maintain context and learn from debugging sessions across development cycles.

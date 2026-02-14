@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ClaudeDevStudio.Dashboard (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ClaudeDevStudio.Dashboard (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

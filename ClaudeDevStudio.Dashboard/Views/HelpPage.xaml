@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ClaudeDevStudio.Dashboard.Views.HelpPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer>
+        <StackPanel Margin="24" Spacing="16" MaxWidth="800">
+            <TextBlock Text="Help &amp; Support" FontSize="28" FontWeight="SemiBold"/>
+            
+            <TextBlock Text="What is ClaudeDevStudio?" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                ClaudeDevStudio helps Claude AI maintain memory and context across your development sessions. 
+                Think of it as Claude's notebook - recording what worked, what didn't, and why decisions were made.
+                This program runs in the background and is used BY Claude, not by you directly.
+            </TextBlock>
+            
+            <TextBlock Text="How It Works" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                1. The TrayApp runs in your system tray monitoring debug output
+                <LineBreak/>
+                2. When you work with Claude in Claude Desktop, it uses MCP to access project memory
+                <LineBreak/>
+                3. Claude records activities, decisions, patterns, and mistakes automatically
+                <LineBreak/>
+                4. Everything backs up to your Documents folder (synced via OneDrive if enabled)
+                <LineBreak/>
+                5. This Dashboard lets you oversee what Claude is learning
+            </TextBlock>
+            
+            <TextBlock Text="Quick Start" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <StackPanel Spacing="8">
+                <TextBlock TextWrapping="Wrap">
+                    <Bold>1. Initialize a project:</Bold> Open terminal in your project folder
+                </TextBlock>
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                       Padding="12" 
+                       CornerRadius="4"
+                       BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                       BorderThickness="1">
+                    <TextBlock FontFamily="Consolas" Text="claudedev init ." />
+                </Border>
+                
+                <TextBlock TextWrapping="Wrap" Margin="0,12,0,0">
+                    <Bold>2. Tell Claude to use it:</Bold> In Claude Desktop, say:
+                </TextBlock>
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                       Padding="12" 
+                       CornerRadius="4"
+                       BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                       BorderThickness="1">
+                    <TextBlock TextWrapping="Wrap" Text="&quot;I'm working on this project - load context&quot;" />
+                </Border>
+                
+                <TextBlock TextWrapping="Wrap" Margin="0,12,0,0">
+                    <Bold>3. Work normally:</Bold> Claude will automatically record everything it learns
+                </TextBlock>
+            </StackPanel>
+            
+            <TextBlock Text="Common Commands" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <TextBlock Grid.Column="0" Text="claudedev init" FontFamily="Consolas" />
+                    <TextBlock Grid.Column="1" Text="Initialize project memory" TextWrapping="Wrap"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <TextBlock Grid.Column="0" Text="claudedev monitor" FontFamily="Consolas" />
+                    <TextBlock Grid.Column="1" Text="Start Visual Studio debug monitoring" TextWrapping="Wrap"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <TextBlock Grid.Column="0" Text="claudedev backup" FontFamily="Consolas" />
+                    <TextBlock Grid.Column="1" Text="Create manual backup (also in Dashboard → Backups)" TextWrapping="Wrap"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <TextBlock Grid.Column="0" Text="claudedev stats" FontFamily="Consolas" />
+                    <TextBlock Grid.Column="1" Text="View memory statistics" TextWrapping="Wrap"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <TextBlock Grid.Column="0" Text="claudedev update" FontFamily="Consolas" />
+                    <TextBlock Grid.Column="1" Text="Check for new version" TextWrapping="Wrap"/>
+                </Grid>
+            </StackPanel>
+            
+            <TextBlock Text="Backups &amp; Recovery" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                All project data is automatically backed up to:
+                <LineBreak/>
+                <Bold>Documents\ClaudeDevStudio\Backups\[ProjectName]\</Bold>
+            </TextBlock>
+            
+            <StackPanel Spacing="8" Margin="0,12,0,0">
+                <TextBlock TextWrapping="Wrap">
+                    <Bold>Automatic Backups:</Bold> Every 50 activities, daily at 2 AM, weekly on Sunday
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Bold>Manual Backup:</Bold> Use "Backup Now" button in Dashboard → Backups
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap">
+                    <Bold>Restore:</Bold> Click "Restore" on any backup in Dashboard → Backups
+                </TextBlock>
+            </StackPanel>
+            
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                   Padding="12" 
+                   CornerRadius="4"
+                   BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                   BorderThickness="1"
+                   Margin="0,12,0,0">
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Moving to a New Computer:" FontWeight="SemiBold"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="12">
+                        1. If using OneDrive/Dropbox/Google Drive: Your Documents folder syncs automatically - backups are already there!
+                        <LineBreak/>
+                        2. If not using cloud sync: Copy entire Documents\ClaudeDevStudio folder to new PC
+                        <LineBreak/>
+                        3. Install ClaudeDevStudio on new PC
+                        <LineBreak/>
+                        4. Open Dashboard → Backups → Click "Restore" on latest backup
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+            
+            <TextBlock Text="Need Help?" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <StackPanel Spacing="12">
+                <HyperlinkButton Content="Email: danielegain@gmail.com" 
+                               NavigateUri="mailto:danielegain@gmail.com"
+                               FontSize="14"/>
+                <HyperlinkButton Content="GitHub Repository" 
+                               NavigateUri="https://github.com/dectdan/Cloud-Developer-Studio"
+                               FontSize="14"/>
+                <HyperlinkButton Content="Report a Bug" 
+                               NavigateUri="https://github.com/dectdan/Cloud-Developer-Studio/issues"
+                               FontSize="14"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

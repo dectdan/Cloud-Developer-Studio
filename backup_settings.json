@@ -1,0 +1,8 @@
+{
+  "Strategy": 0,
+  "MaxBackups": 10,
+  "ActivityThreshold": 50,
+  "LastBackup": "2026-02-13T17:23:10.9025392Z",
+  "BackupCount": 1,
+  "TotalBackupSize": 270
+}

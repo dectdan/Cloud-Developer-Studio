@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>ClaudeDevStudio</RootNamespace>
+    <AssemblyName>claudedev</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Version>0.1.0</Version>
+    <Authors>Claude &amp; Dan</Authors>
+    <Description>Memory system for AI-assisted development with ClaudeDevStudio</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exclude UI projects from CLI build -->
+    <Compile Remove="ClaudeDevStudio.Dashboard\**" />
+    <Compile Remove="ClaudeDevStudio.UI\**" />
+    <EmbeddedResource Remove="ClaudeDevStudio.Dashboard\**" />
+    <EmbeddedResource Remove="ClaudeDevStudio.UI\**" />
+    <None Remove="ClaudeDevStudio.Dashboard\**" />
+    <None Remove="ClaudeDevStudio.UI\**" />
+  </ItemGroup>
+
+</Project>

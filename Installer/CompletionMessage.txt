@@ -1,0 +1,41 @@
+# ClaudeDevStudio Installation Complete!
+
+Thank you for installing ClaudeDevStudio.
+
+## Next Step: Restart Claude Desktop
+
+To enable Claude to use ClaudeDevStudio during your development sessions:
+
+1. **Close Claude Desktop completely** (right-click system tray icon → Exit)
+2. **Restart Claude Desktop**
+3. **Start coding!** - Claude will now have access to project memory and debug monitoring
+
+## What Was Installed:
+
+✓ **Command Line Tool** - `claudedev` command available in any terminal
+✓ **System Tray App** - Quick access from your taskbar
+✓ **Dashboard** - Visual interface for managing projects  
+✓ **Debug Monitor (DebugView)** - Automatically captures Visual Studio errors
+✓ **Claude Desktop Integration** - MCP server configured automatically
+
+## Getting Started:
+
+Open a terminal in your project folder and run:
+```
+claudedev init .
+```
+
+Then tell Claude in Claude Desktop:
+```
+I'm working on this project - load the context
+```
+
+Claude will automatically use ClaudeDevStudio to maintain memory across sessions!
+
+## Location:
+
+Installed to: `%LOCALAPPDATA%\ClaudeDevStudio`
+
+---
+
+**Questions?** Visit: https://github.com/dectdan/Cloud-Developer-Studio

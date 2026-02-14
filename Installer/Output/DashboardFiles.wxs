@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="DashboardFolder">
+            <Component Id="cmp8CC63F71AA04A8FAE21BE7A2DF5D10C1" Guid="{040E0E15-073C-4F30-B19D-DCF0D83B5EAC}">
+                <File Id="fil8941E55B7D049CDCC1C42C6DDD3134A5" KeyPath="yes" Source="$(var.DashboardSourceDir)\App.xbf" />
+            </Component>
+            <Component Id="cmp93ED6BE7DFA8D4C815B8FDF8429FFDB0" Guid="{97F75BCA-A04C-4441-8608-7FAB11F9CA74}">
+                <File Id="filC2FBDE3FE17B766A6F8CC440B10B300E" KeyPath="yes" Source="$(var.DashboardSourceDir)\ClaudeDevStudio.Dashboard.deps.json" />
+            </Component>
+            <Component Id="cmp3805C2958EAFE3FC8D740BC763AE35FF" Guid="{3AC66FAA-C869-4174-A1B1-B35A9B3AA406}">
+                <File Id="fil4C2EC343D488837AFBB7E7D58009B246" KeyPath="yes" Source="$(var.DashboardSourceDir)\ClaudeDevStudio.Dashboard.dll" />
+            </Component>
+            <Component Id="cmp07732513305FDEAC0DCF677307C9662B" Guid="{4BC5A277-FD18-4257-89C4-3E304C01D4EA}">
+                <File Id="fil911638E8D5CB108F9E7CAE689162C37B" KeyPath="yes" Source="$(var.DashboardSourceDir)\ClaudeDevStudio.Dashboard.exe" />
+            </Component>
+            <Component Id="cmp91FF0CE0870B44A5446F46271549B251" Guid="{75738B05-7138-497E-9850-B28D010E3726}">
+                <File Id="fil89BDED5E41927A3B818EBBDFE68092FD" KeyPath="yes" Source="$(var.DashboardSourceDir)\ClaudeDevStudio.Dashboard.pdb" />
+            </Component>
+            <Component Id="cmp4C202BE5C7097E08D4ED42B873BEFCBF" Guid="{957E2F1E-40FE-4C6C-833F-7E9D86CD3B74}">
+                <File Id="filEE7FD30CC8DC9934A60DBFC62E02EC81" KeyPath="yes" Source="$(var.DashboardSourceDir)\ClaudeDevStudio.Dashboard.pri" />
+            </Component>
+            <Component Id="cmp374F915813D791725D72D7ECB63A8667" Guid="{C6862B6D-A0FE-4D23-ACDB-8EF2EB91405F}">
+                <File Id="fil07664EEBA2286CE90AB57577146EC8C2" KeyPath="yes" Source="$(var.DashboardSourceDir)\ClaudeDevStudio.Dashboard.runtimeconfig.json" />
+            </Component>
+            <Component Id="cmp993022DB7361DC7BCB9977CC8347BB12" Guid="{7F22761A-4B2F-4FE3-A6C3-D7C76FBD8BB1}">
+                <File Id="fil6854A15679CE072042D53E387202DD81" KeyPath="yes" Source="$(var.DashboardSourceDir)\ConfigurationWizard.xbf" />
+            </Component>
+            <Component Id="cmpDB97F4BB54DB8C9B2E43241069075F03" Guid="{F75342F2-BA10-48D3-959D-5147805834E6}">
+                <File Id="fil1D54C520435878EA165AAF92355CD7F7" KeyPath="yes" Source="$(var.DashboardSourceDir)\MainWindow.xbf" />
+            </Component>
+            <Component Id="cmp113EB05914616E75C7600EE1BE911A7D" Guid="{2F62D92F-7336-4AE8-A9C6-36952C487A93}">
+                <File Id="filD742EC47058105E56E401123E5639C11" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Graphics.Imaging.Projection.dll" />
+            </Component>
+            <Component Id="cmp03B90FC744D0BBC9C628D23007E3986C" Guid="{59C9A1C5-34E6-4646-A933-C30199EB648F}">
+                <File Id="fil21947FA8E1276BE680838DD3139C14BE" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.InteractiveExperiences.Projection.dll" />
+            </Component>
+            <Component Id="cmpD2D6C90EFC3B3FEC48FF242ABD821B0B" Guid="{53222231-4357-4BE2-9A67-81617F471059}">
+                <File Id="filFCCCB0B94324BD6FD2DC02A81493D1A3" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.ML.OnnxRuntime.dll" />
+            </Component>
+            <Component Id="cmp9B6EA62790F998E272709B3F0FC08747" Guid="{CA0C2DD3-7BE6-4275-9B57-FA975E496174}">
+                <File Id="fil29927846BE70B0006AFF51428BA87DFE" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Security.Authentication.OAuth.Projection.dll" />
+            </Component>
+            <Component Id="cmp5B82B5B17C392C34D3276C4FD689402E" Guid="{0E6A40DF-D6A4-40EE-82C9-DD22E697B37D}">
+                <File Id="fil789268237B02BE4FC8B65CCF06EDBB64" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Web.WebView2.Core.dll" />
+            </Component>
+            <Component Id="cmp232DBE69BA98A5879250C70B659761A6" Guid="{58335794-7912-4B10-93DE-93E19FE4BDB0}">
+                <File Id="fil95098BF62F3D43B2F6AB6BEA53336A27" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Web.WebView2.Core.Projection.dll" />
+            </Component>
+            <Component Id="cmp8FE24AAFA6CD138FB3CBE7323CF74477" Guid="{8B4B425B-1366-4FCE-B80E-D14917BE1806}">
+                <File Id="fil4F82C9763BF27645FA1E2F2E8F9EEB64" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AI.ContentSafety.Projection.dll" />
+            </Component>
+            <Component Id="cmpB6CE344736C54A5186B9D773543038FE" Guid="{25BD000D-281F-46BB-A5FE-8D4C45184985}">
+                <File Id="fil8317EC93394D21F86546838248119CAD" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AI.Foundation.Projection.dll" />
+            </Component>
+            <Component Id="cmpCAFB93C6759BA77DAFCD2FC537AC4A42" Guid="{9539DED6-3A6C-469A-9AF0-D4052988C180}">
+                <File Id="filB154F47D6A7E81394F2DED98F001B8A0" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AI.Imaging.Projection.dll" />
+            </Component>
+            <Component Id="cmp043BB6CD64F4A6E889E3C42D82435F71" Guid="{9190472A-264E-43A4-9101-DA196688C7C9}">
+                <File Id="fil51B0AC33517E7C584463C73F07DBC5C7" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AI.MachineLearning.Projection.dll" />
+            </Component>
+            <Component Id="cmp27029E2868B5337BFECB7F8DF78B4E90" Guid="{6A70CE13-74E9-47B7-B238-20315E2FD43B}">
+                <File Id="fil59939560AD599052647CF1B4B06946A3" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AI.Projection.dll" />
+            </Component>
+            <Component Id="cmpAF88CC7F604080373FA8F83A0D65F07C" Guid="{0BEFCDDF-7D87-440B-B595-06EEB0387D43}">
+                <File Id="fil881D127A9C5C64509706427A46776AAA" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AI.Text.Projection.dll" />
+            </Component>
+            <Component Id="cmpF15A5AF20062691775C8FC34D161A9A0" Guid="{95FCD15E-09FF-42F9-9E87-8C54785C4C09}">
+                <File Id="fil200BB301D18A413ACFC0F43651ECC15B" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.ApplicationModel.Background.Projection.dll" />
+            </Component>
+            <Component Id="cmp200DF69BA70AD47256D8E256E6C1E7EA" Guid="{2CFFD174-5773-4344-A7AC-2AE5D31C7E51}">
+                <File Id="fil27405256036EAD289787B3E427FBDC56" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.ApplicationModel.DynamicDependency.Projection.dll" />
+            </Component>
+            <Component Id="cmpA8498A7970C4CC11A90035C1B7FFDB73" Guid="{03EE7F79-B64A-44E0-B365-C0D077FF2825}">
+                <File Id="fil2C8A30C254064AFC0236EE836E34DAAA" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.ApplicationModel.Resources.Projection.dll" />
+            </Component>
+            <Component Id="cmp2CDE337909BCAE8E2C35EF5E7683691F" Guid="{493D646B-8361-415E-B118-6BE007D1B055}">
+                <File Id="fil6D01180351F94BB7536F0A2C588B5276" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.ApplicationModel.WindowsAppRuntime.Projection.dll" />
+            </Component>
+            <Component Id="cmp39DAE93A96993E5E929BEA8A5B311447" Guid="{A6C7E858-A4B3-4663-90B9-64EF5B6231C8}">
+                <File Id="fil33A03EC07D915D55A5ED643143D0358C" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AppLifecycle.Projection.dll" />
+            </Component>
+            <Component Id="cmpDF5B58D2EA8B9A2D51F40FFE4A6740DB" Guid="{ABEFE3DF-A5A2-4CEB-A947-9946B7EE0A8E}">
+                <File Id="filAE7DD3638EF6FA304534B163A4DC9569" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AppNotifications.Builder.Projection.dll" />
+            </Component>
+            <Component Id="cmp19DE344866C73A694499AC163CB77B4C" Guid="{C6C139FF-65CF-4C9D-B54D-0C710D8DCFC2}">
+                <File Id="filF9C1842BCFECF6B7589B35863DB295FA" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.AppNotifications.Projection.dll" />
+            </Component>
+            <Component Id="cmpBFF5696A272A7E86F3992C6FB007D334" Guid="{E288F882-9F27-42B0-BD55-E9F42DCCE5A1}">
+                <File Id="fil4B469FA46B5490E7672BFDCB7F71E70C" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.BadgeNotifications.Projection.dll" />
+            </Component>
+            <Component Id="cmp38FE663A87AED04EEAF1799134CD2769" Guid="{2BBDBDD7-7D31-4D18-946D-81CC27234793}">
+                <File Id="fil243CCFC4BA321FEBBB265737A6D06E98" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Foundation.Projection.dll" />
+            </Component>
+            <Component Id="cmpD50A0259A579BA3298645C09D9D5FAD6" Guid="{D5055864-4ADC-498C-97D9-CC0DABC70BD5}">
+                <File Id="fil3C41B4643A45D4A085C599D35EA04657" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Management.Deployment.Projection.dll" />
+            </Component>
+            <Component Id="cmpA36D1D0DFEDEC745E81E5B28F3C0666A" Guid="{A5599064-DBA0-4E9D-8AFD-9A32C701E1D5}">
+                <File Id="filB3EA9B87FE9579CC597EC76627C368E0" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Media.Capture.Projection.dll" />
+            </Component>
+            <Component Id="cmp1EF70D25B58F3C1020E66C905E3DBB80" Guid="{CF06D1E2-879D-4629-8DC1-FBA178FBC5F5}">
+                <File Id="fil8674516CECE8DE6C9FBBC3C023ECBB87" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.PushNotifications.Projection.dll" />
+            </Component>
+            <Component Id="cmpC8B93FFC6367DCD9ABF01A33E46F36A2" Guid="{887DCD94-73B2-4508-99F0-D05AB7A52DC0}">
+                <File Id="fil632436D6D39AE554E5105A5683616993" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.SDK.NET.dll" />
+            </Component>
+            <Component Id="cmp2C9EC77F070AF3373BE8ACBCA7E46D00" Guid="{AA609740-C7CB-471C-9414-2396F976F08C}">
+                <File Id="fil3B837326B5883D186598160ED02B0366" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Security.AccessControl.Projection.dll" />
+            </Component>
+            <Component Id="cmp4420B866FEB80CCC240CF3C72AE2BF20" Guid="{A088CBAF-CBD2-487B-9197-2B7DD36E3F25}">
+                <File Id="filE9FDF31EA77906560D00959DDDF2B401" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Storage.Pickers.Projection.dll" />
+            </Component>
+            <Component Id="cmp9EC716E278F725E2D7F9DB2F238ACA66" Guid="{A75AD8A3-ABD8-4107-AB50-66BEA407B38E}">
+                <File Id="fil65E6F56452AE7A04DEA204C6FBF544F0" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Storage.Projection.dll" />
+            </Component>
+            <Component Id="cmp95564BD9ED12798977E6B626320A5C3B" Guid="{ED9C5166-9A81-4F97-90A2-C9667B819547}">
+                <File Id="fil2CEBB97531D195BD5FCF5D0598871F45" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.System.Power.Projection.dll" />
+            </Component>
+            <Component Id="cmpCD734BC91BBFFB9A1E3A6C4FFC277F84" Guid="{805DC2C0-1A19-473D-AA03-E49E8DEF1761}">
+                <File Id="fil5AB82A7F865576AA3EBBEF1EA0487315" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.System.Projection.dll" />
+            </Component>
+            <Component Id="cmp773A7D0F7C1A483539C68F88B0CDA285" Guid="{31B1BC43-0DE0-4E03-B071-592A028E3832}">
+                <File Id="fil9389C7D6394E0B46031A8CB9DE24215E" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.Windows.Widgets.Projection.dll" />
+            </Component>
+            <Component Id="cmp3782001E2BB690E9C4EE403D16AD24A7" Guid="{3C638DCB-A2B6-4014-BC15-93435B18FDB5}">
+                <File Id="fil8EF148471FF13ABD0990DF77914BB586" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.WindowsAppRuntime.Bootstrap.Net.dll" />
+            </Component>
+            <Component Id="cmp6803500F5C5FCD9D9B7992226BB8010E" Guid="{241E25D6-B2ED-4495-B7DF-406A36207B70}">
+                <File Id="filD718ED86C6C425D5C0464F7E3782B175" KeyPath="yes" Source="$(var.DashboardSourceDir)\Microsoft.WinUI.dll" />
+            </Component>
+            <Component Id="cmpC1446A940C5F39A8A15CD3B1C8ED662B" Guid="{13B91704-2014-4FBF-9AFA-1499E0CAE8C4}">
+                <File Id="fil84E79B2D27C7EEDAEEC6FF630DB96DB7" KeyPath="yes" Source="$(var.DashboardSourceDir)\System.Numerics.Tensors.dll" />
+            </Component>
+            <Component Id="cmp2F40B5AFA2419A7AF088414105181E2F" Guid="{C102D6C2-0E1F-475E-8F34-DA0CB0D39728}">
+                <File Id="filF16CA42391D1639F428A375D655FFF40" KeyPath="yes" Source="$(var.DashboardSourceDir)\WinRT.Runtime.dll" />
+            </Component>
+            <Directory Id="dirD8E73578C83DF81A21B302DC81A461A3" Name="Assets">
+                <Component Id="cmp492C7416827CCCCADB6E62615C859377" Guid="{E0CBC4E1-695C-4BDC-9836-90DECED9D2C4}">
+                    <File Id="filCBA4FC6D519043695AB937FA7D17D9BC" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\LockScreenLogo.scale-200.png" />
+                </Component>
+                <Component Id="cmpE590D756C7CF4252308772800E0BF09E" Guid="{8CAE53C6-E4D3-4600-A574-24B067C64DF6}">
+                    <File Id="filEFDEC54079A957D67440439684403B34" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\SplashScreen.scale-200.png" />
+                </Component>
+                <Component Id="cmp3603B9A72F9EAD53D43A4227A11398B8" Guid="{05FA3314-7BD1-4798-859D-2E0A3AC5BE99}">
+                    <File Id="fil29D18E20D84F13BE949B1979B37828CB" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\Square150x150Logo.scale-200.png" />
+                </Component>
+                <Component Id="cmp57EBB3FE64EE9282B16F8B9DC205FEF0" Guid="{543F030D-C731-4C7D-83F8-D1F8D19FB7D7}">
+                    <File Id="fil8CE61CA1CDBD1EC35F8AA28C04F8B01E" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\Square44x44Logo.scale-200.png" />
+                </Component>
+                <Component Id="cmp2316DAAD989F3496AF3FE0BD93953914" Guid="{2C91594C-90F6-4B7D-B6B8-BB57D767F931}">
+                    <File Id="fil370BB6AAE673138C81DE43140CCE3336" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+                </Component>
+                <Component Id="cmp37DDB73B364B22C59C69E9ADA44114C3" Guid="{7C5DCCF7-65BA-4A57-88A4-7F087680F7C2}">
+                    <File Id="fil6668302FA290C2C286096A784D22A489" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\StoreLogo.png" />
+                </Component>
+                <Component Id="cmp62DEE9C74D224C25891106233964284E" Guid="{A50DCD63-4BAD-4511-9FA2-F137B1B52CE6}">
+                    <File Id="filF61FAB7DA5C9E95512CF2538DBB78991" KeyPath="yes" Source="$(var.DashboardSourceDir)\Assets\Wide310x150Logo.scale-200.png" />
+                </Component>
+            </Directory>
+            <Directory Id="dir1A0B97951588B5964EA34489B386718F" Name="runtimes">
+                <Directory Id="dir69E92A2765B115EE272C21FC77430390" Name="win-arm64">
+                    <Directory Id="dir4795EC2247AF74117CF5CEA0019AEAF6" Name="native">
+                        <Component Id="cmp51D8A6A8DFCD387B8B9C7AD4FB4DADDF" Guid="{8CACED32-D621-417E-9404-4A22ACBB0393}">
+                            <File Id="filBD740883DAEA99663157FC0E5AE242D6" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-arm64\native\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll" />
+                        </Component>
+                        <Component Id="cmp1DD1061602AD7D1363F612101932D0CB" Guid="{61F04FE8-0E0B-4C62-89E3-0C6BCB2151FB}">
+                            <File Id="fil53EA2C66D4E38F83D6AAAE268E417E10" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-arm64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll" />
+                        </Component>
+                        <Component Id="cmpFC2133413FC8276DFDEF3F761C47624E" Guid="{E1FFCB7B-B711-4CBF-87EA-4D6A283F8737}">
+                            <File Id="fil41FA68E28EB35B7AF0F8E3E459B5279A" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-arm64\native\WebView2Loader.dll" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir35E7D514EF8DA07A53E7F91FB4FD22F1" Name="win-arm64ec">
+                    <Directory Id="dir66AB276A04E38D9A68DA44C1BE60BEAA" Name="native">
+                        <Component Id="cmp94705076055AFD6C660278608A23908A" Guid="{B68BED7E-4618-47BD-A18F-30311AA98A13}">
+                            <File Id="fil4DEA507A804332ED7E729C168DE996B1" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-arm64ec\native\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll" />
+                        </Component>
+                        <Component Id="cmp5C1F194542F0FE651B2DD6BA379CB88B" Guid="{A0723E0A-FFA8-4B84-A821-AB1FBE8C1F0B}">
+                            <File Id="filBD340BC49C6C4DC9239C98DA5F59A163" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-arm64ec\native\Microsoft.WindowsAppRuntime.Bootstrap.dll" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir9C107DBD37A214224E905C1CE9593DEF" Name="win-x64">
+                    <Directory Id="dir685B7683F56CEF58E129EE3A67ECF581" Name="native">
+                        <Component Id="cmp4E2A244665CF8BC807433923E7E35E78" Guid="{AC174A7C-A3D9-46FA-81B1-5FC16E96D936}">
+                            <File Id="fil994E55CF9C4D1AA0F139D35BC831651A" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-x64\native\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll" />
+                        </Component>
+                        <Component Id="cmp7AED7172214DC676C35470E6E9D32791" Guid="{96284E88-29F8-4536-B7A5-4DF188DC1C0C}">
+                            <File Id="fil29AB56433721601CE8B39838FE856952" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-x64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll" />
+                        </Component>
+                        <Component Id="cmp4FFFC98ECF0F600592D8D0062F771927" Guid="{4720AE9A-8407-43BC-B35C-FA6BE27FE29C}">
+                            <File Id="fil0AD176E0E9A5A6FE99D3680ECE123CD5" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-x64\native\WebView2Loader.dll" />
+                        </Component>
+                    </Directory>
+                </Directory>
+                <Directory Id="dir5FF4EB5FC6BBF754A04701AEEE43B5EE" Name="win-x86">
+                    <Directory Id="dir93ECCD1EDEC58EDC140655C43E0A4A75" Name="native">
+                        <Component Id="cmp08A8EA9EF7A1B9F26F9507784B56E652" Guid="{77693777-86B1-47DD-8665-36F59921CE2D}">
+                            <File Id="fil32C550D019EAD990E47A39192321EDCF" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-x86\native\Microsoft.Windows.ApplicationModel.Background.UniversalBGTask.dll" />
+                        </Component>
+                        <Component Id="cmp2FF1BD4FA4A9054AA7C766D7F4617F59" Guid="{E32CEC1E-2062-4978-9EFC-95FCB934529A}">
+                            <File Id="filE3262A6107A5079D333270158D5B8A54" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-x86\native\Microsoft.WindowsAppRuntime.Bootstrap.dll" />
+                        </Component>
+                        <Component Id="cmp35E35ADC4EE0F3EB6AFDF856A980213D" Guid="{C26B76E1-DA92-42C7-A31B-B8DAC751BF4F}">
+                            <File Id="fil88AD19AF6A510A5CFC4066E9BBE39301" KeyPath="yes" Source="$(var.DashboardSourceDir)\runtimes\win-x86\native\WebView2Loader.dll" />
+                        </Component>
+                    </Directory>
+                </Directory>
+            </Directory>
+            <Directory Id="dirAB565D63615975E7B35B3335C48E4AA2" Name="Views">
+                <Component Id="cmp426BDFF0E8AC1561FB9733A937448E10" Guid="{F26CC982-A3F5-4FFB-A813-A348859544AB}">
+                    <File Id="filA05055653FD2C0201C8473292FE1C9EC" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\ActivityPage.xbf" />
+                </Component>
+                <Component Id="cmpBD7614D6A4236BDC6CB6056B7B60AAC2" Guid="{A5D5F3C2-6A8F-44BF-ABE4-EDE6C9DF865B}">
+                    <File Id="fil944B22A143E7B07F06D4EB40AD681F0E" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\ApprovalsPage.xbf" />
+                </Component>
+                <Component Id="cmp866A8700553A7A5C40CF00CE2896C11B" Guid="{82A94A7E-77C5-4BE0-BC13-CA5DA09A1B70}">
+                    <File Id="filEE6A552AAF50A59B641694A676E6A030" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\MainPage.xbf" />
+                </Component>
+                <Component Id="cmpBF8B7591E9679F7D75188031FE95E0F8" Guid="{989EB1C6-F7AC-43A6-8047-6AFE3D558145}">
+                    <File Id="fil7DE74436C47460944276C5AFB9EE7088" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\MemoryPage.xbf" />
+                </Component>
+                <Component Id="cmpDB72E0D8DE7FF4D43AF94730A5A320E1" Guid="{D3D99EBC-FACB-4D4E-A7F4-B76BDDB6954D}">
+                    <File Id="filB5F1AFB3A1330D12D25B6CE1011580E6" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\MistakesPage.xbf" />
+                </Component>
+                <Component Id="cmp7326D20D1F6F6580C6EA744E08649689" Guid="{5DCBAFBD-9FC8-4703-A163-719AF537542C}">
+                    <File Id="fil3BE74DCB51D81DBE7B8D485701EC68C2" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\PatternsPage.xbf" />
+                </Component>
+                <Component Id="cmp5F20D311FA6D8C2F628859FA799730D0" Guid="{5F23B13D-04D8-4963-8C50-7B1E33699BD8}">
+                    <File Id="filC60ED7865BD05384ABBC8AA2927B88E9" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\ProjectsPage.xbf" />
+                </Component>
+                <Component Id="cmp8C99CE704B7789A6D8066626BB47CC37" Guid="{FC360B92-50A2-4010-B929-8B9EB87848C5}">
+                    <File Id="filD5737B3FA7DB0AAC9B8916337B29202C" KeyPath="yes" Source="$(var.DashboardSourceDir)\Views\SettingsPage.xbf" />
+                </Component>
+            </Directory>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="DashboardFilesGroup">
+            <ComponentRef Id="cmp8CC63F71AA04A8FAE21BE7A2DF5D10C1" />
+            <ComponentRef Id="cmp93ED6BE7DFA8D4C815B8FDF8429FFDB0" />
+            <ComponentRef Id="cmp3805C2958EAFE3FC8D740BC763AE35FF" />
+            <ComponentRef Id="cmp07732513305FDEAC0DCF677307C9662B" />
+            <ComponentRef Id="cmp91FF0CE0870B44A5446F46271549B251" />
+            <ComponentRef Id="cmp4C202BE5C7097E08D4ED42B873BEFCBF" />
+            <ComponentRef Id="cmp374F915813D791725D72D7ECB63A8667" />
+            <ComponentRef Id="cmp993022DB7361DC7BCB9977CC8347BB12" />
+            <ComponentRef Id="cmpDB97F4BB54DB8C9B2E43241069075F03" />
+            <ComponentRef Id="cmp113EB05914616E75C7600EE1BE911A7D" />
+            <ComponentRef Id="cmp03B90FC744D0BBC9C628D23007E3986C" />
+            <ComponentRef Id="cmpD2D6C90EFC3B3FEC48FF242ABD821B0B" />
+            <ComponentRef Id="cmp9B6EA62790F998E272709B3F0FC08747" />
+            <ComponentRef Id="cmp5B82B5B17C392C34D3276C4FD689402E" />
+            <ComponentRef Id="cmp232DBE69BA98A5879250C70B659761A6" />
+            <ComponentRef Id="cmp8FE24AAFA6CD138FB3CBE7323CF74477" />
+            <ComponentRef Id="cmpB6CE344736C54A5186B9D773543038FE" />
+            <ComponentRef Id="cmpCAFB93C6759BA77DAFCD2FC537AC4A42" />
+            <ComponentRef Id="cmp043BB6CD64F4A6E889E3C42D82435F71" />
+            <ComponentRef Id="cmp27029E2868B5337BFECB7F8DF78B4E90" />
+            <ComponentRef Id="cmpAF88CC7F604080373FA8F83A0D65F07C" />
+            <ComponentRef Id="cmpF15A5AF20062691775C8FC34D161A9A0" />
+            <ComponentRef Id="cmp200DF69BA70AD47256D8E256E6C1E7EA" />
+            <ComponentRef Id="cmpA8498A7970C4CC11A90035C1B7FFDB73" />
+            <ComponentRef Id="cmp2CDE337909BCAE8E2C35EF5E7683691F" />
+            <ComponentRef Id="cmp39DAE93A96993E5E929BEA8A5B311447" />
+            <ComponentRef Id="cmpDF5B58D2EA8B9A2D51F40FFE4A6740DB" />
+            <ComponentRef Id="cmp19DE344866C73A694499AC163CB77B4C" />
+            <ComponentRef Id="cmpBFF5696A272A7E86F3992C6FB007D334" />
+            <ComponentRef Id="cmp38FE663A87AED04EEAF1799134CD2769" />
+            <ComponentRef Id="cmpD50A0259A579BA3298645C09D9D5FAD6" />
+            <ComponentRef Id="cmpA36D1D0DFEDEC745E81E5B28F3C0666A" />
+            <ComponentRef Id="cmp1EF70D25B58F3C1020E66C905E3DBB80" />
+            <ComponentRef Id="cmpC8B93FFC6367DCD9ABF01A33E46F36A2" />
+            <ComponentRef Id="cmp2C9EC77F070AF3373BE8ACBCA7E46D00" />
+            <ComponentRef Id="cmp4420B866FEB80CCC240CF3C72AE2BF20" />
+            <ComponentRef Id="cmp9EC716E278F725E2D7F9DB2F238ACA66" />
+            <ComponentRef Id="cmp95564BD9ED12798977E6B626320A5C3B" />
+            <ComponentRef Id="cmpCD734BC91BBFFB9A1E3A6C4FFC277F84" />
+            <ComponentRef Id="cmp773A7D0F7C1A483539C68F88B0CDA285" />
+            <ComponentRef Id="cmp3782001E2BB690E9C4EE403D16AD24A7" />
+            <ComponentRef Id="cmp6803500F5C5FCD9D9B7992226BB8010E" />
+            <ComponentRef Id="cmpC1446A940C5F39A8A15CD3B1C8ED662B" />
+            <ComponentRef Id="cmp2F40B5AFA2419A7AF088414105181E2F" />
+            <ComponentRef Id="cmp492C7416827CCCCADB6E62615C859377" />
+            <ComponentRef Id="cmpE590D756C7CF4252308772800E0BF09E" />
+            <ComponentRef Id="cmp3603B9A72F9EAD53D43A4227A11398B8" />
+            <ComponentRef Id="cmp57EBB3FE64EE9282B16F8B9DC205FEF0" />
+            <ComponentRef Id="cmp2316DAAD989F3496AF3FE0BD93953914" />
+            <ComponentRef Id="cmp37DDB73B364B22C59C69E9ADA44114C3" />
+            <ComponentRef Id="cmp62DEE9C74D224C25891106233964284E" />
+            <ComponentRef Id="cmp51D8A6A8DFCD387B8B9C7AD4FB4DADDF" />
+            <ComponentRef Id="cmp1DD1061602AD7D1363F612101932D0CB" />
+            <ComponentRef Id="cmpFC2133413FC8276DFDEF3F761C47624E" />
+            <ComponentRef Id="cmp94705076055AFD6C660278608A23908A" />
+            <ComponentRef Id="cmp5C1F194542F0FE651B2DD6BA379CB88B" />
+            <ComponentRef Id="cmp4E2A244665CF8BC807433923E7E35E78" />
+            <ComponentRef Id="cmp7AED7172214DC676C35470E6E9D32791" />
+            <ComponentRef Id="cmp4FFFC98ECF0F600592D8D0062F771927" />
+            <ComponentRef Id="cmp08A8EA9EF7A1B9F26F9507784B56E652" />
+            <ComponentRef Id="cmp2FF1BD4FA4A9054AA7C766D7F4617F59" />
+            <ComponentRef Id="cmp35E35ADC4EE0F3EB6AFDF856A980213D" />
+            <ComponentRef Id="cmp426BDFF0E8AC1561FB9733A937448E10" />
+            <ComponentRef Id="cmpBD7614D6A4236BDC6CB6056B7B60AAC2" />
+            <ComponentRef Id="cmp866A8700553A7A5C40CF00CE2896C11B" />
+            <ComponentRef Id="cmpBF8B7591E9679F7D75188031FE95E0F8" />
+            <ComponentRef Id="cmpDB72E0D8DE7FF4D43AF94730A5A320E1" />
+            <ComponentRef Id="cmp7326D20D1F6F6580C6EA744E08649689" />
+            <ComponentRef Id="cmp5F20D311FA6D8C2F628859FA799730D0" />
+            <ComponentRef Id="cmp8C99CE704B7789A6D8066626BB47CC37" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

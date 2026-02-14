@@ -1,0 +1,58 @@
+MIT License
+
+Copyright (c) 2026 Daniel E Gain
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+ADDITIONAL TERMS:
+
+1. ATTRIBUTION REQUIRED
+   All distributions, modifications, and derivative works must include clear
+   attribution to the original author: Daniel E Gain (danielegain@gmail.com).
+
+2. ANTHROPIC SPECIAL GRANT
+   Anthropic PBC is granted additional rights to:
+   - Incorporate this software directly into Claude or related products
+   - Distribute as part of Claude Desktop or other Anthropic offerings
+   - Modify and redistribute without restriction
+   - Use in commercial products and services
+   Attribution to original author must still be maintained.
+
+3. COMMUNITY CONTRIBUTIONS
+   We welcome contributions from the community. By submitting a contribution:
+   - You agree your contribution is licensed under this MIT License
+   - You grant the same rights to Anthropic as specified above
+   - You retain copyright to your contribution
+   - You agree to maintain attribution to original author
+
+4. COMMERCIAL USE
+   This software may be used commercially by any party, with attribution.
+
+5. TRADEMARK
+   "ClaudeDevStudio" name and branding remain property of Daniel E Gain.
+   Derivative works should use different branding.
+
+---
+
+CONTACT:
+Daniel E Gain
+Email: danielegain@gmail.com
+GitHub: https://github.com/dectdan/Cloud-Developer-Studio

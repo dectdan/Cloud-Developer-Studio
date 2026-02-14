@@ -1,0 +1,31 @@
+# Build outputs
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# Installer outputs
+Installer/Output/*.msi
+Installer/Output/*.wixobj
+Installer/Dashboard.wxs
+
+# IDE
+.vs/
+.vscode/
+*.slnx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NuGet
+packages/
+*.nupkg
+
+# Node
+node_modules/
+
+# Keep MSI in releases folder
+!Releases/*.msi

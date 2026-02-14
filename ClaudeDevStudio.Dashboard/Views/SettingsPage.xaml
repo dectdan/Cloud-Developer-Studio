@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ClaudeDevStudio.Dashboard.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer>
+        <StackPanel Margin="24" Spacing="16" MaxWidth="800">
+            <TextBlock Text="Settings" FontSize="28" FontWeight="SemiBold"/>
+            
+            <!-- Startup Behavior -->
+            <TextBlock Text="Startup Behavior" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <ToggleSwitch x:Name="AutoStartToggle" 
+                          Header="Launch TrayApp when Windows starts" 
+                          IsOn="True"
+                          Toggled="AutoStartToggle_Toggled"/>
+            <TextBlock Text="TrayApp runs in background and provides system tray access. Claude uses it via MCP to access your projects." 
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Margin="0,4,0,0"/>
+            
+            <!-- Backup Settings -->
+            <TextBlock Text="Backup Settings" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <ComboBox x:Name="BackupFrequencyCombo" 
+                      Header="Automatic Backup Frequency"
+                      SelectedIndex="1"
+                      MinWidth="300">
+                <ComboBoxItem Content="After every 25 activities"/>
+                <ComboBoxItem Content="After every 50 activities (recommended)"/>
+                <ComboBoxItem Content="After every 100 activities"/>
+                <ComboBoxItem Content="Daily only"/>
+            </ComboBox>
+            <TextBlock Text="Backups are stored in Documents\ClaudeDevStudio\Backups" 
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       FontSize="12"
+                       Margin="0,4,0,0"/>
+            
+            <ComboBox x:Name="RetentionCombo" 
+                      Header="Backup Retention"
+                      SelectedIndex="1"
+                      MinWidth="300"
+                      Margin="0,12,0,0">
+                <ComboBoxItem Content="Keep last 10 backups"/>
+                <ComboBoxItem Content="Keep last 30 backups (recommended)"/>
+                <ComboBoxItem Content="Keep last 100 backups"/>
+                <ComboBoxItem Content="Keep all backups"/>
+            </ComboBox>
+            
+            <!-- Approval Settings -->
+            <TextBlock Text="Approval Settings" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <TextBlock Text="Require human approval for:" Foreground="{ThemeResource TextFillColorSecondaryBrush}" FontSize="12"/>
+            <CheckBox Content="File deletions" IsChecked="True" Margin="0,8,0,0"/>
+            <CheckBox Content="Build commands" IsChecked="False"/>
+            <CheckBox Content="Package generation" IsChecked="False"/>
+            <CheckBox Content="Git operations" IsChecked="False"/>
+            <TextBlock Text="These control what Claude must ask permission for before executing." 
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Margin="0,8,0,0"/>
+            
+            <!-- Debug Monitoring -->
+            <TextBlock Text="Debug Monitoring" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <TextBlock x:Name="DebugViewStatus" 
+                       Text="DebugView: Installed" 
+                       Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                       FontSize="12"/>
+            <CheckBox Content="Auto-launch DebugView when monitoring starts" IsChecked="True" Margin="0,8,0,0"/>
+            <TextBlock Text="DebugView captures Visual Studio debug output for Claude to analyze." 
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Margin="0,4,0,0"/>
+            
+            <!-- MCP Server -->
+            <TextBlock Text="MCP Server" FontWeight="SemiBold" FontSize="18" Margin="0,24,0,0"/>
+            <TextBlock x:Name="MCPStatus" 
+                       Text="Status: Running" 
+                       Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                       FontSize="12"/>
+            <TextBlock Text="MCP server enables Claude Desktop to access ClaudeDevStudio features." 
+                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Margin="0,4,0,0"/>
+            <Button Content="View Claude Desktop Config" 
+                    Click="ViewClaudeConfig_Click"
+                    Margin="0,8,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
