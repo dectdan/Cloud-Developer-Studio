@@ -10,6 +10,8 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import https from 'https';
+import http from 'http';
 
 const execAsync = promisify(exec);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -40,6 +42,44 @@ async function runClaudeDevCommand(args) {
       error: error.message
     };
   }
+}
+
+/**
+ * Fetch URL content - allows Claude to verify its own work and fetch documentation
+ */
+async function fetchUrl(url) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const client = urlObj.protocol === 'https:' ? https : http;
+    
+    const options = {
+      headers: {
+        'User-Agent': 'ClaudeDevStudio/1.0.0'
+      }
+    };
+    
+    client.get(url, options, (res) => {
+      let data = '';
+      
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      
+      res.on('end', () => {
+        resolve({
+          success: true,
+          statusCode: res.statusCode,
+          headers: res.headers,
+          body: data
+        });
+      });
+    }).on('error', (err) => {
+      resolve({
+        success: false,
+        error: err.message
+      });
+    });
+  });
 }
 
 /**
@@ -200,6 +240,20 @@ class ClaudeDevStudioServer {
             required: ['project_path'],
           },
         },
+        {
+          name: 'fetch_url',
+          description: 'Fetch content from a URL - allows Claude to verify websites it built, fetch documentation, or get current information without asking the user',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              url: {
+                type: 'string',
+                description: 'URL to fetch (http:// or https://)',
+              },
+            },
+            required: ['url'],
+          },
+        },
       ],
     }));
 
@@ -229,6 +283,9 @@ class ClaudeDevStudioServer {
           
           case 'claudedev_monitor_start':
             return await this.handleMonitorStart(args);
+          
+          case 'fetch_url':
+            return await this.handleFetchUrl(args);
           
           default:
             throw new Error(`Unknown tool: ${name}`);
@@ -342,6 +399,31 @@ class ClaudeDevStudioServer {
           text: result.success ? 
             'Debug monitor started. Capturing exceptions and errors from Visual Studio.' : 
             `Error: ${result.error}`,
+        },
+      ],
+    };
+  }
+
+  async handleFetchUrl(args) {
+    const result = await fetchUrl(args.url);
+    
+    if (!result.success) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Failed to fetch ${args.url}: ${result.error}`,
+          },
+        ],
+        isError: true,
+      };
+    }
+    
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Status: ${result.statusCode}\nContent-Type: ${result.headers['content-type']}\n\n${result.body}`,
         },
       ],
     };
