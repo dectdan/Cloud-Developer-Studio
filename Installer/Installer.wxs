@@ -8,6 +8,7 @@
   <?define UpgradeCode = "12345678-1234-1234-1234-123456789ABC" ?>
   
   <?define DashboardSourceDir = "..\ClaudeDevStudio.Dashboard\bin\Release\net8.0-windows10.0.19041.0" ?>
+  <?define MCPServerSourceDir = "..\mcp-server" ?>
   
   <Product Id="*"
            Name="$(var.ProductName)"
@@ -71,7 +72,7 @@
           </Directory>
 
           <!-- Dashboard - will be populated by heat.exe harvest -->
-          <Directory Id="DashboardFolder" Name="Dashboard" />
+          <Directory Id="DASHBOARDFOLDER" Name="Dashboard" />
 
           <!-- DebugView (Bundled - No separate download needed!) -->
           <Directory Id="DebugViewFolder" Name="DebugView">
@@ -85,13 +86,8 @@
           </Directory>
 
           <!-- MCP Server (Bundled - Auto-configured for Claude Desktop!) -->
-          <Directory Id="MCPServerFolder" Name="mcp-server">
-            <Component Id="MCPServer_Component" Guid="EEEE5555-6666-7777-8888-999999999999">
-              <File Id="mcp_index.js" Source="..\mcp-server\index.js" KeyPath="yes" />
-              <File Id="mcp_package.json" Source="..\mcp-server\package.json" />
-              <File Id="mcp_README.md" Source="..\mcp-server\README.md" />
-            </Component>
-          </Directory>
+          <!-- MCP Server - will be populated by heat.exe harvest -->
+          <Directory Id="MCPSERVERFOLDER" Name="mcp-server" />
 
         </Directory>
       </Directory>
@@ -105,8 +101,8 @@
             <Shortcut Id="DashboardShortcut"
                       Name="ClaudeDevStudio"
                       Description="Development Memory Dashboard"
-                      Target="[DashboardFolder]ClaudeDevStudio.Dashboard.exe"
-                      WorkingDirectory="DashboardFolder"
+                      Target="[DASHBOARDFOLDER]ClaudeDevStudio.Dashboard.exe"
+                      WorkingDirectory="DASHBOARDFOLDER"
                       Icon="ProductIcon" />
 
             <!-- TrayApp Shortcut -->
@@ -136,11 +132,11 @@
       <RegistryKey Root="HKCU" Key="Software\ClaudeDevStudio">
         <RegistryValue Type="string" Name="InstallPath" Value="[INSTALLFOLDER]" KeyPath="yes" />
         <RegistryValue Type="string" Name="Version" Value="$(var.ProductVersion)" />
-        <RegistryValue Type="string" Name="DashboardPath" Value="[DashboardFolder]" />
+        <RegistryValue Type="string" Name="DashboardPath" Value="[DASHBOARDFOLDER]" />
         <RegistryValue Type="string" Name="TrayAppPath" Value="[TrayAppFolder]" />
         <RegistryValue Type="string" Name="CLIPath" Value="[CLIFolder]" />
         <RegistryValue Type="string" Name="DebugViewPath" Value="[DebugViewFolder]" />
-        <RegistryValue Type="string" Name="MCPServerPath" Value="[MCPServerFolder]" />
+        <RegistryValue Type="string" Name="MCPServerPath" Value="[MCPSERVERFOLDER]" />
       </RegistryKey>
     </Component>
 
@@ -158,7 +154,7 @@
       <ComponentRef Id="Autostart_Component" />
       <ComponentGroupRef Id="DashboardFilesGroup" />
       <ComponentRef Id="DebugView_Component" />
-      <ComponentRef Id="MCPServer_Component" />
+      <ComponentGroupRef Id="MCPServerFilesGroup" />
       <ComponentRef Id="Shortcuts_Component" />
       <ComponentRef Id="Registry_Component" />
       <ComponentRef Id="ConfigScript_Component" />
@@ -174,7 +170,7 @@
     <!-- Custom Action: Auto-configure Claude Desktop -->
     <CustomAction Id="ConfigureClaudeDesktop"
                   Directory="INSTALLFOLDER"
-                  ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile -File &quot;[INSTALLFOLDER]ConfigureClaudeDesktop.ps1&quot; -MCPServerPath &quot;[MCPServerFolder]index.js&quot;"
+                  ExeCommand="powershell.exe -ExecutionPolicy Bypass -NoProfile -File &quot;[INSTALLFOLDER]ConfigureClaudeDesktop.ps1&quot; -MCPServerPath &quot;[MCPSERVERFOLDER]index.js&quot;"
                   Execute="deferred"
                   Return="ignore"
                   Impersonate="yes" />

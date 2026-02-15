@@ -16,16 +16,17 @@ import http from 'http';
 const execAsync = promisify(exec);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// Path to claudedev.exe
-const CLAUDEDEV_PATH = path.join(__dirname, '..', 'bin', 'Release', 'net8.0', 'claudedev.exe');
+// Path to claudedev.exe - points to installed location
+const CLAUDEDEV_PATH = path.join(__dirname, '..', 'CLI', 'claudedev.exe');
 
 /**
  * Execute claudedev command and return result
  */
 async function runClaudeDevCommand(args) {
   try {
-    // Direct execution - let Node.js handle the escaping
-    const { stdout, stderr } = await execAsync(`"${CLAUDEDEV_PATH}" ${args}`, {
+    // Use PowerShell call operator to properly handle paths and quotes
+    const command = `& "${CLAUDEDEV_PATH}" ${args}`;
+    const { stdout, stderr } = await execAsync(command, {
       maxBuffer: 10 * 1024 * 1024, // 10MB buffer
       timeout: 30000, // 30 second timeout
       shell: 'powershell.exe' // Use PowerShell as the shell

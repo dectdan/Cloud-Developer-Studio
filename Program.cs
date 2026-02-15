@@ -1042,7 +1042,7 @@ namespace ClaudeDevStudio
 
         static int ShowHelp()
         {
-            Console.WriteLine("ClaudeDevStudio v1.0.0");
+            Console.WriteLine("ClaudeDevStudio v1.0.1");
             Console.WriteLine("Memory & Development System for Claude AI");
             Console.WriteLine();
             Console.WriteLine("Copyright © 2026 Daniel E Gain");
@@ -1145,7 +1145,7 @@ namespace ClaudeDevStudio
 
         static int ShowVersion()
         {
-            Console.WriteLine("ClaudeDevStudio v1.0.0");
+            Console.WriteLine("ClaudeDevStudio v1.0.1");
             Console.WriteLine();
             Console.WriteLine("Copyright © 2026 Daniel E Gain");
             Console.WriteLine("Email: danielegain@gmail.com");
