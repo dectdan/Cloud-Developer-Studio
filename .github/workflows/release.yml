@@ -1,0 +1,131 @@
+name: Build & Release Installer
+
+on:
+  push:
+    tags:
+      - 'v*'          # triggers on v1.1.0, v1.2.0, etc.
+  workflow_dispatch:  # manual trigger from GitHub UI
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Install NSIS
+      run: choco install nsis -y
+      shell: powershell
+
+    - name: Build VoiceServer
+      run: |
+        dotnet publish VoiceServer/VoiceServer.csproj `
+          -c Release -r win-x64 --self-contained false `
+          -o Installer/build/VoiceServer
+      shell: powershell
+
+    - name: Build VS Bridge VSIX
+      run: |
+        dotnet build VSExtension/CdsVsBridge/CdsVsBridge.csproj -c Release
+        $vsix = Get-ChildItem VSExtension/CdsVsBridge/bin/Release/*.vsix | Select-Object -First 1
+        if ($vsix) {
+          New-Item -ItemType Directory -Force -Path Installer/build/VSExtension | Out-Null
+          Copy-Item $vsix.FullName Installer/build/VSExtension/CdsVsBridge.vsix -Force
+          Write-Host "VSIX staged: $($vsix.Name)"
+        }
+      shell: powershell
+
+    - name: Stage MCP server
+      run: |
+        New-Item -ItemType Directory -Force -Path Installer/build/mcp-server | Out-Null
+        Copy-Item mcp-server/index.js    Installer/build/mcp-server/ -Force
+        Copy-Item mcp-server/package.json Installer/build/mcp-server/ -Force
+      shell: powershell
+
+    - name: Download Kokoro model
+      run: |
+        $dest = "Installer/build/VoiceServer/kokoro.onnx"
+        if (!(Test-Path $dest)) {
+          Write-Host "Downloading Kokoro model (~310 MB)..."
+          $url = "https://github.com/taylorchu/kokoro-onnx/releases/download/v0.2.0/kokoro.onnx"
+          Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
+          $mb = [int]((Get-Item $dest).Length / 1MB)
+          Write-Host "Downloaded: $mb MB"
+        }
+      shell: powershell
+
+    - name: Copy installer assets
+      run: |
+        New-Item -ItemType Directory -Force -Path Installer/Assets | Out-Null
+        New-Item -ItemType Directory -Force -Path Installer/Output | Out-Null
+        Copy-Item Installer/ConfigureClaudeDesktop.ps1 Installer/build/ -Force
+        # Placeholder icon if not present
+        if (!(Test-Path Installer/Assets/AppIcon.ico)) {
+          $icon = Get-ChildItem -Recurse -Filter "*.ico" | Select-Object -First 1
+          if ($icon) { Copy-Item $icon.FullName Installer/Assets/AppIcon.ico -Force }
+        }
+      shell: powershell
+
+    - name: Build NSIS installer
+      run: |
+        Push-Location Installer
+        & "C:\Program Files (x86)\NSIS\makensis.exe" /V3 setup.nsi
+        Pop-Location
+      shell: powershell
+
+    - name: Get version from tag
+      id: version
+      run: |
+        $tag = "${{ github.ref_name }}"
+        if ($tag -eq "") { $tag = "dev" }
+        echo "TAG=$tag" >> $env:GITHUB_OUTPUT
+      shell: powershell
+
+    - name: Rename output EXE with version
+      run: |
+        $src  = "Installer/Output/ClaudeDevStudio-Setup.exe"
+        $dest = "Installer/Output/ClaudeDevStudio-${{ steps.version.outputs.TAG }}-Setup.exe"
+        Rename-Item $src $dest
+        $mb = [int]((Get-Item $dest).Length / 1MB)
+        Write-Host "Release artifact: $dest ($mb MB)"
+      shell: powershell
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        name: "ClaudeDevStudio ${{ steps.version.outputs.TAG }}"
+        body: |
+          ## ClaudeDevStudio ${{ steps.version.outputs.TAG }}
+
+          ### Install
+          1. Download `ClaudeDevStudio-${{ steps.version.outputs.TAG }}-Setup.exe`
+          2. Double-click and follow the prompts (~60 seconds)
+          3. Restart Claude Desktop
+
+          ### What's included
+          - VS Bridge VSIX (Visual Studio 2022 integration)
+          - VoiceServer with Kokoro TTS model (on-machine, no API cost)
+          - MCP server (auto-configured for Claude Desktop)
+          - Chat mirror system for context persistence
+
+          ### Requirements
+          - Windows 10/11 x64
+          - .NET 8 Runtime (downloaded automatically if missing)
+          - Node.js LTS (downloaded automatically if missing)
+          - Visual Studio 2022 (optional — for VS Bridge)
+        files: |
+          Installer/Output/ClaudeDevStudio-${{ steps.version.outputs.TAG }}-Setup.exe
+        draft: false
+        prerelease: false
