@@ -243,39 +243,6 @@ class ClaudeDevStudioServer {
             required: ['url'],
           },
         },
-        {
-          name: 'claudedev_vs_get_state',
-          description: 'Get current Visual Studio state: active solution, open file, debug mode, exception message. Written by the CDS VS Bridge VSIX extension.',
-          inputSchema: { type: 'object', properties: {}, required: [] },
-        },
-        {
-          name: 'claudedev_vs_get_errors',
-          description: 'Get the Visual Studio Error List from the last build: errors and warnings with file/line/message. Written by the CDS VS Bridge VSIX extension.',
-          inputSchema: { type: 'object', properties: {}, required: [] },
-        },
-        {
-          name: 'claudedev_vs_get_output',
-          description: 'Get the Visual Studio build output text from the last build. Written by the CDS VS Bridge VSIX extension.',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              lines: { type: 'number', description: 'Number of lines from end to return (default: 100)' },
-            },
-            required: [],
-          },
-        },
-        {
-          name: 'claudedev_vs_get_events',
-          description: 'Get recent Visual Studio events (build start/end, debugger break/run, solution open/close). Optionally filter by timestamp.',
-          inputSchema: {
-            type: 'object',
-            properties: {
-              since: { type: 'string', description: 'ISO timestamp — only return events after this time (optional)' },
-              limit: { type: 'number', description: 'Max events to return (default: 50)' },
-            },
-            required: [],
-          },
-        },
       ],
     }));
 
@@ -292,11 +259,7 @@ class ClaudeDevStudioServer {
           case 'claudedev_check_mistake':  return await this.handleCheckMistake(args);
           case 'claudedev_stats':          return await this.handleStats(args);
           case 'claudedev_monitor_start':  return await this.handleMonitorStart(args);
-          case 'fetch_url':                   return await this.handleFetchUrl(args);
-          case 'claudedev_vs_get_state':      return this.handleVsGetState();
-          case 'claudedev_vs_get_errors':     return this.handleVsGetErrors();
-          case 'claudedev_vs_get_output':     return this.handleVsGetOutput(args);
-          case 'claudedev_vs_get_events':     return this.handleVsGetEvents(args);
+          case 'fetch_url':               return await this.handleFetchUrl(args);
           default: throw new Error(`Unknown tool: ${name}`);
         }
       } catch (error) {
@@ -446,112 +409,6 @@ class ClaudeDevStudioServer {
         text: `Status: ${result.statusCode}\nContent-Type: ${result.headers['content-type']}\n\n${result.body}`,
       }],
     };
-  }
-
-  // ── VS Bridge handlers ─────────────────────────────────────────────────────
-
-  handleVsGetState() {
-    const bridgeDir = path.join(
-      'C:\\Users\\Big_D\\OneDrive\\Documents\\ClaudeDevStudio\\VSBridge'
-    );
-    const stateFile = path.join(bridgeDir, 'vs_state.json');
-    if (!fs.existsSync(stateFile)) {
-      return { content: [{ type: 'text', text: '[VS Bridge] vs_state.json not found. Is the CDS VS Bridge extension installed and a solution open?' }] };
-    }
-    try {
-      const raw = fs.readFileSync(stateFile, 'utf8');
-      const state = JSON.parse(raw);
-      const age = Math.round((Date.now() - new Date(state.timestamp).getTime()) / 1000);
-      return {
-        content: [{ type: 'text', text: `VS State (${age}s ago):\n${JSON.stringify(state, null, 2)}` }],
-      };
-    } catch (e) {
-      return { content: [{ type: 'text', text: `[VS Bridge] Failed to read state: ${e.message}` }] };
-    }
-  }
-
-  handleVsGetErrors() {
-    const bridgeDir = path.join(
-      'C:\\Users\\Big_D\\OneDrive\\Documents\\ClaudeDevStudio\\VSBridge'
-    );
-    const errFile = path.join(bridgeDir, 'vs_errors.json');
-    if (!fs.existsSync(errFile)) {
-      return { content: [{ type: 'text', text: '[VS Bridge] vs_errors.json not found. Build the project first.' }] };
-    }
-    try {
-      const raw = fs.readFileSync(errFile, 'utf8');
-      const snap = JSON.parse(raw);
-      const age = Math.round((Date.now() - new Date(snap.timestamp).getTime()) / 1000);
-      let out = `Build: ${snap.buildResult} | Errors: ${snap.errorCount} | Warnings: ${snap.warningCount} (${age}s ago)\n\n`;
-      if (snap.errors && snap.errors.length > 0) {
-        out += '=== ERRORS ===\n';
-        for (const e of snap.errors) {
-          out += `  ${e.file}(${e.line},${e.col}): ${e.code ? e.code + ' ' : ''}${e.message}  [${e.project}]\n`;
-        }
-      }
-      if (snap.warnings && snap.warnings.length > 0) {
-        out += '\n=== WARNINGS ===\n';
-        for (const w of snap.warnings) {
-          out += `  ${w.file}(${w.line},${w.col}): ${w.code ? w.code + ' ' : ''}${w.message}  [${w.project}]\n`;
-        }
-      }
-      if (snap.errorCount === 0 && snap.warningCount === 0) {
-        out += '(Clean build — no errors or warnings)';
-      }
-      return { content: [{ type: 'text', text: out }] };
-    } catch (e) {
-      return { content: [{ type: 'text', text: `[VS Bridge] Failed to read errors: ${e.message}` }] };
-    }
-  }
-
-  handleVsGetOutput(args) {
-    const bridgeDir = path.join(
-      'C:\\Users\\Big_D\\OneDrive\\Documents\\ClaudeDevStudio\\VSBridge'
-    );
-    const outFile = path.join(bridgeDir, 'vs_build_output.txt');
-    if (!fs.existsSync(outFile)) {
-      return { content: [{ type: 'text', text: '[VS Bridge] vs_build_output.txt not found. Build the project first.' }] };
-    }
-    try {
-      const lines = fs.readFileSync(outFile, 'utf8').split('\n');
-      const limit = (args && args.lines) ? args.lines : 100;
-      const tail = lines.slice(-limit).join('\n');
-      return { content: [{ type: 'text', text: `Build Output (last ${limit} lines):\n\n${tail}` }] };
-    } catch (e) {
-      return { content: [{ type: 'text', text: `[VS Bridge] Failed to read output: ${e.message}` }] };
-    }
-  }
-
-  handleVsGetEvents(args) {
-    const bridgeDir = path.join(
-      'C:\\Users\\Big_D\\OneDrive\\Documents\\ClaudeDevStudio\\VSBridge'
-    );
-    const eventsFile = path.join(bridgeDir, 'vs_events.jsonl');
-    if (!fs.existsSync(eventsFile)) {
-      return { content: [{ type: 'text', text: '[VS Bridge] vs_events.jsonl not found. Extension may not be installed yet.' }] };
-    }
-    try {
-      const since = (args && args.since) ? new Date(args.since) : null;
-      const limit = (args && args.limit) ? args.limit : 50;
-      const lines = fs.readFileSync(eventsFile, 'utf8')
-        .split('\n')
-        .filter(l => l.trim())
-        .map(l => { try { return JSON.parse(l); } catch { return null; } })
-        .filter(e => e !== null)
-        .filter(e => !since || new Date(e.ts) > since)
-        .slice(-limit);
-      if (lines.length === 0) {
-        return { content: [{ type: 'text', text: '[VS Bridge] No events found.' }] };
-      }
-      const out = lines.map(e => {
-        const ago = Math.round((Date.now() - new Date(e.ts).getTime()) / 1000);
-        const extra = e.extra ? ' ' + JSON.stringify(e.extra) : '';
-        return `  [${ago}s ago] ${e.event}${extra}`;
-      }).join('\n');
-      return { content: [{ type: 'text', text: `VS Events (${lines.length}):\n${out}` }] };
-    } catch (e) {
-      return { content: [{ type: 'text', text: `[VS Bridge] Failed to read events: ${e.message}` }] };
-    }
   }
 
   async run() {
